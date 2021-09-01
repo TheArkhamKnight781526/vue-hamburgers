@@ -2,7 +2,7 @@
   <div
     class="hamburger"
     :class="[{ 'is-active': isActive }, `hamburger--${type}`]"
-    @click="isActive = !isActive"
+    @click="$listeners.toggle ? $emit('toggle') : (isActive = !isActive)"
     :style="wrapperStyle"
   >
     <div class="hamburger-box">
@@ -38,12 +38,19 @@ export default {
     color: {
       type: String,
       default: '#000000'
+    },
+    active: {
+      type: [Boolean, String],
+      default: false
     }
   },
   watch: {
     spacing: function(newVal) {
       // watch it
       this.spacingUpdate(newVal)
+    },
+    active: function(newVal) {
+      this.isActive = newVal
     }
   },
   computed: {
@@ -76,7 +83,7 @@ export default {
   },
   data() {
     return {
-      isActive: false,
+      isActive: this.active,
       position: '2',
       positionBefore: '10',
       positionAfter: '20'
